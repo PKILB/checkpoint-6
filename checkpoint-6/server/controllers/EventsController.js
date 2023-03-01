@@ -15,7 +15,7 @@ export class EventsController extends BaseController {
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createEvent)
         .put('/:eventId', this.editEvent)
-        .delete('/eventId', this.cancelEvent)
+        .delete('/:eventId', this.cancelEvent)
     }
 
 

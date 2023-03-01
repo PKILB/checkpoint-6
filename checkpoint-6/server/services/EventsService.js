@@ -15,17 +15,11 @@ class EventsService {
         return event
     }
     async editEvent(eventId, eventData) {
-        // const event = await dbContext.Events.findById(eventId)
-        // if(!event) {
-        //     throw new BadRequest('Invalid event Id Ya Goof')
-        // }
-
         const event = await this.getEventById(eventId)
-        // const creator = await dbContext.Account.findById(eventData.creatorId)
-        // if(!creator) {
-        //     throw new BadRequest('There is no Event Creator with that Id')
-        // }
-        // event.creatorId = eventData.creatorId || event.creatorId
+        if(event.isCanceled = true) {
+            throw new BadRequest('This Event is canceled!!')
+        }
+
         event.name = eventData.name || event.name
         event.description = eventData.description || event.description
         event.coverImg = eventData.coverImg || event.coverImg
