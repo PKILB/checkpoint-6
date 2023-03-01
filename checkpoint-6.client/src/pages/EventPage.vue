@@ -38,6 +38,50 @@
             </div>
         </div>
 
+        <div class="row mt-4 m-auto text-light">
+            <div class="col-12">
+                See Who Is Attending
+            </div>
+            <div class="col-12 m-auto">
+                <div class="row bg-color">
+                    <div class="col-12">
+                        All the peeps profile pictures will be going here
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5 text-light">
+            <div class="col-8 m-auto">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            What Are People Saying
+                        </div>
+                        <div class="row mt-3 bg-color">
+                            <div class="col-12 p-4">
+                                <div class="text-end mb-2">
+                                    Join The Conversation
+                                </div>
+                                <form class="">
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="exampleFormControlTextarea1"
+                                            placeholder="Tell the peeps!!!" rows="3"></textarea>
+                                    </div>
+                                </form>
+                                <div class="d-flex justify-content-end my-3">
+                                    <button class="btn btn-success">Post Comment</button>
+                                </div>
+                                <div>
+                                    All Comments Will Be Here
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
