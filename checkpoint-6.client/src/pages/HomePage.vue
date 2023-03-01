@@ -29,9 +29,11 @@
     </div>
     <div class="row">
       <div class="col-12 m-auto">
-        <!-- <div class="col-md-3" v-for="e in events" :key="e.id">
-          <EventCard :event="e" />
-        </div> -->
+        <div class="row">
+          <div class="col-md-4" v-for="e in events" :key="e.id">
+            <EventCard :event="e" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,24 +42,29 @@
 <script>
 import Pop from '../utils/Pop.js';
 import { eventsService } from '../services/EventsService.js'
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
+import EventCard from '../components/EventCard.vue';
+import { AppState } from '../AppState.js';
 
 export default {
   setup() {
     async function getAllEvents() {
       try {
-        await eventsService.getAllEvents()
-      } catch (error) {
-        Pop.error(error, "[Getting AllEvents]")
+        await eventsService.getAllEvents();
+      }
+      catch (error) {
+        Pop.error(error, "[Getting AllEvents]");
       }
     }
-
     onMounted(() => {
-      getAllEvents()
-    })
+      getAllEvents();
+    });
 
-    return {}
-  }
+    return {
+      events: computed(() => AppState.events)
+    };
+  },
+  components: { EventCard }
 }
 </script>
 
@@ -65,11 +72,5 @@ export default {
 .bg-image {
   background-image: url(https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZXZlbnQlMjBzZWF0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60);
   object-fit: cover;
-}
-
-
-
-.types-color {
-  background-color: #383b46;
 }
 </style>
