@@ -12,6 +12,13 @@ class EventsService {
         const events = res.data.map(e => new Event(e))
         AppState.events = events
     }
+
+    async getOneEventById(eventId) {
+        AppState.event = null
+        const res = await api.get('api/events/' + eventId)
+        logger.log('getting one event by Id', res.data)
+        AppState.event = new Event(res.data)
+    }
 }
 
 export const eventsService = new EventsService()
