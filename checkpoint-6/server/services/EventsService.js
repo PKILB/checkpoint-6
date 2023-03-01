@@ -1,10 +1,19 @@
 import { dbContext } from "../db/DbContext.js"
-import { BadRequest } from "../utils/Errors.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 
 
 class EventsService {
+    async cancelEvent(eventId, requestorId) {
+        const event = await this.getEventById(eventId)
 
+        if(event.creatorId.toString() != requestorId) {
+            throw new Forbidden('You do not have the permission to delete this Goober')
+        }
+        event.isCanceled = true
+        await event.save()
+        return event
+    }
     async editEvent(eventId, eventData) {
         const event = await dbContext.Events.findById(eventId)
         if(!event) {
