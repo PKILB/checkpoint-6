@@ -6,7 +6,9 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 class EventsService {
     async cancelEvent(eventId, requestorId) {
         const event = await this.getEventById(eventId)
-
+        // if(event.isCanceled = true) {
+        //     throw new BadRequest('This Event is canceled!!')
+        // }
         if(event.creatorId.toString() != requestorId) {
             throw new Forbidden('You do not have the permission to delete this Goober')
         }
@@ -16,18 +18,14 @@ class EventsService {
     }
     async editEvent(eventId, eventData) {
         const event = await this.getEventById(eventId)
-        if(event.isCanceled = true) {
+        if(event.isCanceled == true) {
             throw new BadRequest('This Event is canceled!!')
         }
-
-        event.name = eventData.name || event.name
-        event.description = eventData.description || event.description
-        event.coverImg = eventData.coverImg || event.coverImg
-        event.location = eventData.location || event.location
-        event.capacity = eventData.capacity || event.capacity
-        event.startDate = eventData.startDate || event.startDate
-        // event.isCanceled = eventData.isCanceled != null? eventData.isCanceled : event.isCanceled
-        event.type = eventData.type || event.type
+        
+        
+            event.name = eventData.name || event.name
+            event.description = eventData.description || event.description
+        
         await event.save()
         
         return event
