@@ -15,26 +15,17 @@ export class EventsController extends BaseController {
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createEvent)
         .put('/:eventId', this.editEvent)
+        .delete('/eventId', this.cancelEvent)
     }
 
 
-    async editEvent(req, res, next) {
-        try {
-            const eventData = req.body
-            const eventId = req.params.eventId
-            const event = await eventsService.editEvent(eventId, eventData)
-            return res.send(event)
-        } catch (error) {
-            next(error)
-        }
-    }
     async getEventById(req, res, next) {
         try {
             
             const eventId = req.params.eventId
             const event = await eventsService.getEventById(eventId)
             return res.send(event)
-
+            
         } catch (error) {
             next(error)
         }
@@ -52,12 +43,33 @@ export class EventsController extends BaseController {
         try {
             const eventData = req.body
             eventData.creatorId = req.userInfo.id
-
+            
             const event = await eventsService.createEvent(eventData)
             return res.send(event)
         } catch (error) {
             next(error)
         }
     }
+    async editEvent(req, res, next) {
+        try {
+            const eventData = req.body
+            const eventId = req.params.eventId
+            const updatedEvent = await eventsService.editEvent(eventId, eventData)
+            return res.send(updatedEvent)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async cancelEvent(req, res, next) {
+        try {
+            const eventId = req.params.eventId
+            const requestorId = req.userInfo.id
+            const event = await eventsService.cancelEvent(eventId, requestorId)
+            return res.send(event)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
+
 
