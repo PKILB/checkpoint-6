@@ -31,7 +31,7 @@ class EventsService {
         event.location = eventData.location || event.location
         event.capacity = eventData.capacity || event.capacity
         event.startDate = eventData.startDate || event.startDate
-        event.isCanceled = eventData.isCanceled || event.isCanceled
+        event.isCanceled = eventData.isCanceled != null? eventData.isCanceled : event.isCanceled
         event.type = eventData.type || event.type
         await event.save()
         
