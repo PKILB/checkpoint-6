@@ -11,7 +11,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
-
+        <li class="ms-3">
+          <button class="btn btn-color" data-bs-toggle="modal" data-bs-target="#eventModal">
+            <i class="mdi mdi-plus-box"></i>
+            Add Event
+          </button>
+        </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <Login />
@@ -30,6 +35,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-color {
+  background-color: #72ffd5;
+}
+
 a:hover {
   text-decoration: none;
 }

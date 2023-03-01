@@ -4,32 +4,32 @@
             <div class="col-12 m-auto bg-color">
                 <div class="row text-light">
                     <div class="col-4 my-4">
-                        <img class="img-fluid" :src="event.coverImg" alt="">
+                        <img class="img-fluid" :src="event?.coverImg" alt="">
                     </div>
                     <div class="col-8 my-4">
                         <div class="row">
                             <div class="col-12 d-flex justify-content-between">
                                 <h5>
-                                    {{ event.name }}
+                                    {{ event?.name }}
                                 </h5>
                                 <div>
-                                    {{ event.startDate }}
+                                    {{ event?.startDate }}
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 my-2">
                             <div>
-                                {{ event.location }}
+                                {{ event?.location }}
                             </div>
                         </div>
                         <div class="col-12">
                             <p class="">
-                                {{ event.description }}
+                                {{ event?.description }}
                             </p>
                         </div>
                         <div class="col-12 d-flex justify-content-between">
                             <h6>
-                                {{ event.capacity }} Spots Left
+                                {{ event?.capacity }} Spots Left
                             </h6>
                             <button class="btn btn-warning">Attend <i class="mdi mdi-account-check"></i></button>
                         </div>
@@ -70,7 +70,7 @@
                                     </div>
                                 </form>
                                 <div class="d-flex justify-content-end my-3">
-                                    <button class="btn btn-success">Post Comment</button>
+                                    <button class="btn btn-color">Post Comment</button>
                                 </div>
                                 <div>
                                     All Comments Will Be Here
@@ -91,6 +91,7 @@ import { watchEffect, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AppState } from '../AppState.js';
 import { eventsService } from '../services/EventsService.js';
+import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 // import { computed } from '@vue/reactivity';
 
@@ -101,6 +102,7 @@ export default {
         async function getOneEventById() {
             try {
                 const eventId = route.params.eventId
+                logger.log(eventId)
                 await eventsService.getOneEventById(eventId)
             } catch (error) {
                 Pop.error("Go home we don't want you here", "[Getting Event by Id]")
@@ -128,5 +130,9 @@ export default {
 <style lang="scss" scoped>
 .bg-color {
     background-color: #434653;
+}
+
+.btn-color {
+    background-color: #72ffd5;
 }
 </style>
