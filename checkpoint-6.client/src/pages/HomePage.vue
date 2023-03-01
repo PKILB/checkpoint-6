@@ -29,15 +29,33 @@
     </div>
     <div class="row">
       <div class="col-12 m-auto">
-
+        <!-- <div class="col-md-3" v-for="e in events" :key="e.id">
+          <EventCard :event="e" />
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pop from '../utils/Pop.js';
+import { eventsService } from '../services/EventsService.js'
+import { onMounted } from 'vue';
+
 export default {
   setup() {
+    async function getAllEvents() {
+      try {
+        await eventsService.getAllEvents()
+      } catch (error) {
+        Pop.error(error, "[Getting AllEvents]")
+      }
+    }
+
+    onMounted(() => {
+      getAllEvents()
+    })
+
     return {}
   }
 }
