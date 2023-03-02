@@ -46,7 +46,7 @@
             <div class="col-12 m-auto">
                 <div class="row bg-color">
                     <div v-for="t in tickets" class="col-12">
-                        <img :src="t.picture" :title="t.name" alt="" class="img-fluid rounded">
+                        <img :src="t.picture" :title="t.name" alt="" class="img-fluid profile-img">
                     </div>
                 </div>
             </div>
@@ -155,6 +155,12 @@ export default {
 <style lang="scss" scoped>
 .bg-color {
     background-color: #434653;
+}
+
+.profile-img {
+    // height: 50%;
+    // width: 50%;
+    border-radius: 50%;
 }
 
 .btn-color {
