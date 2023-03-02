@@ -4,7 +4,10 @@ import { eventsService } from "./EventsService.js"
 
 
 class CommentsService {
-    
+    async getEventCommentsByEventId(eventId) {
+        const comments = await dbContext.Comments.find({ eventId }).populate('creator', 'name picture')
+        return comments
+    }
     async createComment(commentData) {
         const event = await eventsService.getEventById(commentData.eventId)
         if (event.isCanceled) {

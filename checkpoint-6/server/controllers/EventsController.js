@@ -1,4 +1,5 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
+import { commentsService } from "../services/CommentsService.js";
 import { eventsService } from "../services/EventsService.js";
 import BaseController from "../utils/BaseController.js";
 
@@ -43,9 +44,11 @@ export class EventsController extends BaseController {
 
     async getEventCommentsByEventId(req, res, next) {
         try {
-            
+            const eventId = req.params.eventId
+            const comments = await commentsService.getEventCommentsByEventId(eventId)
+            return res.send(comments)
         } catch (error) {
-            
+            next(error)
         }
     }
     async createEvent(req, res, next) {
