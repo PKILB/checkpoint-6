@@ -2,8 +2,7 @@ import { Schema } from "mongoose";
 
 
 
-export const TicketSchema = new Schema(
-    {
+export const TicketSchema = new Schema({
     eventId: { type: Schema.Types.ObjectId, ref: 'Event', required: true},
     accountId: { type: Schema.Types.ObjectId, ref: 'Account', required: true}
 }, { timestamps: true, toJSON: { virtuals: true }})
@@ -21,3 +20,5 @@ TicketSchema.virtual('event', {
     justOne: true,
     ref: 'Event'
 })
+
+TicketSchema.index({ eventId: 1, accountId: 1 }, { unique: true})
