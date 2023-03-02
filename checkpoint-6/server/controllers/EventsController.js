@@ -12,6 +12,7 @@ export class EventsController extends BaseController {
         this.router
         .get('', this.getAllEvents)
         .get('/:eventId', this.getEventById)
+        .get('/:eventId/comments', this.getEventCommentsByEventId)
         .use(Auth0Provider.getAuthorizedUserInfo)
         .post('', this.createEvent)
         .put('/:eventId', this.editEvent)
@@ -37,6 +38,14 @@ export class EventsController extends BaseController {
             
         } catch (error) {
             next(error)
+        }
+    }
+
+    async getEventCommentsByEventId(req, res, next) {
+        try {
+            
+        } catch (error) {
+            
         }
     }
     async createEvent(req, res, next) {
