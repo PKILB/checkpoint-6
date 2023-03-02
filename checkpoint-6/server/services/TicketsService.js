@@ -1,12 +1,26 @@
 import { dbContext } from "../db/DbContext.js"
-import { Forbidden } from "../utils/Errors.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 import { eventsService } from "./EventsService.js"
 
 
 
 class TicketsService {
-    async deleteTicket(ticketId, requestorId) {
-        // const ticket = await this.getMyTickets(ticketId)
+    async deleteTicket(ticketData, ticketId, requestorId) {
+        const ticket = await dbContext.Tickets.findById(ticketId)
+        const event = await eventsService.getEventById(ticketData.eventId)
+
+
+        if (!ticket) {
+            throw new BadRequest('Invalid Id')
+        }
+
+        if (ticket.accountId.toString() !== requestorId) {
+            throw new Forbidden("I'm onto you losers")
+        }
+        await ticket.remove()
+        event.capacity++
+        await event.save()
+        return 'This Ticket Has Been Deleted'
     }
     async getTicketsByEventId(eventId) {
         const tickets = await dbContext.Tickets.find({eventId})
@@ -17,9 +31,10 @@ class TicketsService {
     async getMyTickets(accountId) {
         const tickets = await dbContext.Tickets.find({ accountId })
         .populate({
-            path: 'creator',
+            path: 'event',
             select: 'name picture'
         })
+        return tickets
     }
     async createTicket(ticketData) {
         // const event = await dbContext.Events.findById(ticketData.eventId)
