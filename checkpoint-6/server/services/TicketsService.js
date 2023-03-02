@@ -57,6 +57,9 @@ class TicketsService {
         })
             // @ts-ignore
             event.capacity--
+            // if(event.capacity == 0) {
+            //     throw new BadRequest('There Is No Space For You')
+            // }
             await event.save()
         return ticket
     }
