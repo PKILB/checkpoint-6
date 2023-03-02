@@ -10,19 +10,21 @@ class EventsService {
         //     throw new BadRequest('This Event is canceled!!')
         // }
         if(event.creatorId.toString() != requestorId) {
-            throw new Forbidden('You do not have the permission to delete this Goober')
+            throw new BadRequest('You do not have the permission to delete this Goober')
         }
         event.isCanceled = true
         await event.save()
         return event
     }
-    async editEvent(eventId, eventData) {
+    async editEvent(eventId, eventData, requestorId) {
         const event = await this.getEventById(eventId)
         if(event.isCanceled == true) {
             throw new BadRequest('This Event is canceled!!')
         }
         
-        
+        if(event.creatorId.toString() != requestorId) {
+            throw new BadRequest('You do not have the permission to delete this Goober')
+        }
             event.name = eventData.name || event.name
             event.description = eventData.description || event.description
         
