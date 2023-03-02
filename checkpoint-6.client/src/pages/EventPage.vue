@@ -64,17 +64,11 @@
                                 <div class="text-end mb-2">
                                     Join The Conversation
                                 </div>
-                                <form class="">
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1"
-                                            placeholder="Tell the peeps!!!" rows="3"></textarea>
-                                    </div>
-                                </form>
-                                <div class="d-flex justify-content-end my-3">
-                                    <button class="btn btn-color">Post Comment</button>
+                                <div>
+                                    <Comment />
                                 </div>
                                 <div>
-                                    All Comments Will Be Here
+                                    {{ comments }}
                                 </div>
                             </div>
                         </div>
@@ -95,6 +89,7 @@ import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import { ticketsService } from '../services/TicketsService.js'
+import { commentsService } from '../services/CommentsService.js';
 // import { computed } from '@vue/reactivity';
 
 export default {
@@ -109,6 +104,15 @@ export default {
             } catch (error) {
                 Pop.error("Go home we don't want you here", "[Getting Event by Id]")
                 router.push("/")
+            }
+        }
+
+        async function getCommentsByEventId() {
+            try {
+                const eventId = route.params.eventId
+                await commentsService.getCommentsByEventId(eventId)
+            } catch (error) {
+                Pop.error(error.message)
             }
         }
 
@@ -129,6 +133,7 @@ export default {
             if (route.params.eventId) {
                 getOneEventById()
                 getTicketsByEventId()
+                getCommentsByEventId()
             }
         })
 
@@ -137,6 +142,7 @@ export default {
             account: computed(() => AppState.account),
             tickets: computed(() => AppState.tickets),
             foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.account.id)),
+            comments: computed(() => AppState.comments),
 
             async createTicket() {
                 try {
@@ -161,9 +167,5 @@ export default {
     // height: 50%;
     // width: 50%;
     border-radius: 50%;
-}
-
-.btn-color {
-    background-color: #72ffd5;
 }
 </style>
