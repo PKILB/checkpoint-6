@@ -52,7 +52,9 @@
             <div class="modal-footer">
                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <!-- <router-link :to="{ name: 'Event', params: { eventId: event.id } }"> -->
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create Event</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{ editable.id ? 'Save Changes' :
+                    'Create Event' }}
+                </button>
                 <!-- </router-link> -->
             </div>
         </form>
@@ -66,6 +68,7 @@ import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import { Event } from '../models/Event.js';
+import { router } from '../router.js';
 
 export default {
     props: {
@@ -83,8 +86,11 @@ export default {
             async createEvent() {
                 try {
                     const formData = editable.value
-                    await eventsService.createEvent(formData)
+                    const event = await eventsService.createEvent(formData)
                     editable.value = { type: 'concert' }
+                    if (event?.id) {
+                        router.push({ name: 'Event', params: { eventId: event.id } })
+                    }
                 } catch (error) {
                     logger.error(error)
                     Pop.error(error.message)

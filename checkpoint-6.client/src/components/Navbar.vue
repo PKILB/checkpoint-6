@@ -12,10 +12,12 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
         <li class="ms-3">
+          <!-- <router-link :to="{ name: 'Event', params: { eventId: event.id } }"> -->
           <button v-if="account.id" class="btn btn-color" data-bs-toggle="modal" data-bs-target="#eventModal">
             <i class="mdi mdi-plus-box"></i>
             Add Event
           </button>
+          <!-- </router-link> -->
         </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
@@ -28,7 +30,11 @@
 import Login from './Login.vue'
 import { AppState } from '../AppState.js';
 import { computed } from 'vue';
+// import { Event } from '../models/Event.js';
 export default {
+  // props: {
+  //   event: { type: Event, required: true }
+  // },
   setup() {
     return {
       account: computed(() => AppState.account)

@@ -1,6 +1,6 @@
 <template>
     <router-link class="selectable" :to="{ name: 'Event', params: { eventId: event.id } }">
-        <div class="EventCard card my-4 types-color">
+        <div class="EventCard card my-4 types-color border-color shadow-lg rounded">
             <img class="" :src="event.coverImg" alt="">
             <div class="card-body text-light">
                 <h5>
@@ -39,11 +39,20 @@ export default {
 <style lang="scss" scoped>
 .EventCard {
     height: 73vh;
+
+    // .cardbody {
+    //     height: fit-content;
+    // }
+
+    // overflow: ;
     // width: 4;
     text-shadow: 0 0 4px black;
 }
 
-
+.border-color {
+    border: 2px 2px #383b46;
+    // box-shadow: ;
+}
 
 .types-color {
     background-color: #383b46;

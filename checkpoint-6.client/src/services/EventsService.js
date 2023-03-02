@@ -23,6 +23,7 @@ class EventsService {
     async createEvent(formData) {
         const res = await api.post('api/events', formData)
         logger.log('creating event', res.data)
+        return new Event(res.data)
     }
 
     async cancelEvent(eventId) {
@@ -30,6 +31,12 @@ class EventsService {
         logger.log('cancel', res.data)
         AppState.event = new Event(res.data)
     }
+
+    // async editEvent(eventData) {
+    //     const res = await api.put('api/events/' + eventId)
+    //     let i = AppState.events.findIndex(e => e.id == eventId)
+    //     if (i )
+    // }
 }
 
 export const eventsService = new EventsService()
