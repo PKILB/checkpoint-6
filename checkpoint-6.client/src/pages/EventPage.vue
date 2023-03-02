@@ -31,7 +31,8 @@
                             <h6>
                                 {{ event?.capacity }} Spots Left
                             </h6>
-                            <button class="btn btn-warning">Attend <i class="mdi mdi-account-check"></i></button>
+                            <button v-if="!foundTicket" @click="createTicket()" class="btn btn-warning">Attend <i
+                                    class="mdi mdi-account-check"></i></button>
                         </div>
                     </div>
                 </div>
@@ -44,8 +45,8 @@
             </div>
             <div class="col-12 m-auto">
                 <div class="row bg-color">
-                    <div class="col-12">
-                        All the peeps profile pictures will be going here
+                    <div v-for="t in tickets" class="col-12">
+                        <img :src="t.picture" :title="t.name" alt="" class="img-fluid rounded">
                     </div>
                 </div>
             </div>
@@ -93,6 +94,7 @@ import { AppState } from '../AppState.js';
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
+import { ticketsService } from '../services/TicketsService.js'
 // import { computed } from '@vue/reactivity';
 
 export default {
@@ -110,17 +112,40 @@ export default {
             }
         }
 
-        onMounted(() => {
-            getOneEventById()
-        })
-        // watchEffect(() => {
-        //     if (route.params.eventId) {
-        //         getOneEventById()
-        //     }
+        async function getTicketsByEventId() {
+            try {
+                const eventId = route.params.eventId
+                await ticketsService.getTicketsByEventId(eventId)
+            } catch (error) {
+                logger.error(error)
+                Pop.error(error.message)
+            }
+        }
+
+        // onMounted(() => {
+        //     getOneEventById()
         // })
+        watchEffect(() => {
+            if (route.params.eventId) {
+                getOneEventById()
+                getTicketsByEventId()
+            }
+        })
 
         return {
-            event: computed(() => AppState.event)
+            event: computed(() => AppState.event),
+            // account: computed(() => AppState.account)
+            tickets: computed(() => AppState.tickets),
+            // foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.event.id)),
+
+            async createTicket() {
+                try {
+                    await ticketsService.createTicket({ eventId: route.params.eventId })
+                } catch (error) {
+                    logger.error(error)
+                    Pop.error(error.message)
+                }
+            }
         }
     }
 }
