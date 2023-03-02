@@ -51,7 +51,9 @@
             </div>
             <div class="modal-footer">
                 <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <router-link :to="{ name: 'Event', params: { eventId: event.id } }"> -->
                 <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create Event</button>
+                <!-- </router-link> -->
             </div>
         </form>
     </div>
@@ -63,8 +65,13 @@ import { ref } from 'vue';
 import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
+import { Event } from '../models/Event.js';
 
 export default {
+    props: {
+        event: { type: Event, required: true }
+    },
+
     setup() {
 
         const editable = ref({

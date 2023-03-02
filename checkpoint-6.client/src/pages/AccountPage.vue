@@ -14,16 +14,46 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <!-- <li>
+          <button @click="cancelEvent(event.id)"
+            v-if="account.id && route.name == 'Event' && event?.creatorId == account.id" class="btn btn-danger"
+            :disabled="event.isCanceled">
+            {{ event.isCanceled ? 'isCanceled' : 'close event' }}
+          </button>
+        </li> -->
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { AppState } from '../AppState'
+import { eventsService } from '../services/EventsService.js'
+import { logger } from '../utils/Logger.js'
+import Pop from '../utils/Pop.js'
 export default {
   setup() {
+    const route = useRoute()
     return {
-      account: computed(() => AppState.account)
+      route,
+      account: computed(() => AppState.account),
+      event: computed(() => AppState.event),
+
+      async cancelEvent(eventId) {
+        try {
+          if (await Pop.confirm('Are you sure you want to CANCEL?')) {
+            await eventsService.cancelEvent(eventId)
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.error(error.message)
+        }
+      }
     }
   }
 }
