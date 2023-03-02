@@ -31,8 +31,8 @@
                             <h6>
                                 {{ event?.capacity }} Spots Left
                             </h6>
-                            <button v-if="!foundTicket" @click="createTicket()" class="btn btn-warning">Attend <i
-                                    class="mdi mdi-account-check"></i></button>
+                            <button v-if="!foundTicket" @click="createTicket()" class="btn btn-warning">Attend
+                                <i class="mdi mdi-account-check"></i></button>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="row mt-4 m-auto text-light">
-            <div class="col-12">
+            <div class="col-12 mb-2">
                 See Who Is Attending
             </div>
             <div class="col-12 m-auto">
@@ -134,9 +134,9 @@ export default {
 
         return {
             event: computed(() => AppState.event),
-            // account: computed(() => AppState.account)
+            account: computed(() => AppState.account),
             tickets: computed(() => AppState.tickets),
-            // foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.event.id)),
+            foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.account.id)),
 
             async createTicket() {
                 try {
