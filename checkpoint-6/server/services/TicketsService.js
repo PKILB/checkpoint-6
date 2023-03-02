@@ -5,6 +5,22 @@ import { eventsService } from "./EventsService.js"
 
 
 class TicketsService {
+    async deleteTicket(ticketId, requestorId) {
+        // const ticket = await this.getMyTickets(ticketId)
+    }
+    async getTicketsByEventId(eventId) {
+        const tickets = await dbContext.Tickets.find({eventId})
+        .populate('profile', 'name picture')
+    return tickets
+    }
+
+    async getMyTickets(accountId) {
+        const tickets = await dbContext.Tickets.find({ accountId })
+        .populate({
+            path: 'creator',
+            select: 'name picture'
+        })
+    }
     async createTicket(ticketData) {
         // const event = await dbContext.Events.findById(ticketData.eventId)
         const event = await eventsService.getEventById(ticketData.eventId)
@@ -18,10 +34,12 @@ class TicketsService {
         await ticket.populate({
             path: 'event',
             populate: {
-                path: 'creator ticketCount',
+                path: 'creator',
                 select: 'name picture'
             }
         })
+            event.capacity--
+            await event.save()
         return ticket
     }
 }

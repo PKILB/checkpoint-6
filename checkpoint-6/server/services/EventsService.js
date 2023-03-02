@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
+import { ticketsService } from "./TicketsService.js"
 
 
 
@@ -13,6 +14,9 @@ class EventsService {
             throw new BadRequest('You do not have the permission to delete this Goober')
         }
         event.isCanceled = true
+        // if(event.isCanceled = true) {
+
+        // }
         await event.save()
         return event
     }
@@ -43,8 +47,10 @@ class EventsService {
     async getAllEvents() {
         const events = await dbContext.Events.find()
         .populate('creator', 'name picture')
+        .populate('ticketCount')
         return events
     }
+
     async createEvent(eventData) {
         const event = await dbContext.Events.create(eventData)
 
