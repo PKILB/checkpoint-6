@@ -5,9 +5,10 @@ import { eventsService } from "./EventsService.js"
 
 
 class TicketsService {
-    async deleteTicket(ticketData, ticketId, requestorId) {
+    async deleteTicket(ticketId, requestorId) {
         const ticket = await dbContext.Tickets.findById(ticketId)
-        const event = await eventsService.getEventById(ticketData.eventId)
+        // @ts-ignore
+        const event = await eventsService.getEventById(ticket.eventId)
 
 
         if (!ticket) {
@@ -18,6 +19,7 @@ class TicketsService {
             throw new Forbidden("I'm onto you losers")
         }
         await ticket.remove()
+        // @ts-ignore
         event.capacity++
         await event.save()
         return 'This Ticket Has Been Deleted'
@@ -53,6 +55,7 @@ class TicketsService {
                 select: 'name picture'
             }
         })
+            // @ts-ignore
             event.capacity--
             await event.save()
         return ticket
