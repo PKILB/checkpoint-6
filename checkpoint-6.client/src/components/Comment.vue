@@ -3,9 +3,9 @@
         <div class="form-group">
             <textarea required name="body" v-model="editable.body" class="form-control" id="body"
                 placeholder="Tell the peeps!!!" rows="3">
-                                                                </textarea>
+                                                                    </textarea>
             <div class="d-flex justify-content-end my-3">
-                <button type="submit" class="btn btn-color">Post Comment</button>
+                <button aria-label="Post Comment" type="submit" class="btn btn-color">Post Comment</button>
             </div>
         </div>
     </form>

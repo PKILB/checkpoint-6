@@ -6,56 +6,76 @@
       </div>
       <div class="col-12">
         <div class="row">
-          <div v-for="e in myEvents" class="col-md-3">
-            <EventCard :event="a" />
+          <div v-for="e in myEvents" :key="e.id" class="col-md-3">
+            <EventCard :event="e" />
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="row">
+  <div class="container">
+    <div class="row mt-5 text-light">
       <div class="col-12">
+        Upcoming Events
         <!-- <li>
-          <button @click="cancelEvent(event.id)"
-            v-if="account.id && route.name == 'Event' && event?.creatorId == account.id" class="btn btn-danger"
-            :disabled="event.isCanceled">
-            {{ event.isCanceled ? 'isCanceled' : 'close event' }}
-          </button>
-        </li> -->
+            <button @click="cancelEvent(event.id)"
+              v-if="account.id && route.name == 'Event' && event?.creatorId == account.id" class="btn btn-danger"
+              :disabled="event.isCanceled">
+              {{ event.isCanceled ? 'isCanceled' : 'close event' }}
+            </button>
+          </li> -->
+      </div>
+      <div class="col-8">
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState'
+import EventCard from '../components/EventCard.vue'
 import { eventsService } from '../services/EventsService.js'
 import { logger } from '../utils/Logger.js'
 import Pop from '../utils/Pop.js'
 export default {
   setup() {
-    const route = useRoute()
+    const route = useRoute();
+    async function getAllEvents() {
+      try {
+        await eventsService.getAllEvents()
+      } catch (error) {
+        Pop.error(error, "[Getting My Events]")
+      }
+    }
+
+    onMounted(() => {
+      getAllEvents()
+    })
 
     return {
       route,
       account: computed(() => AppState.account),
       event: computed(() => AppState.event),
+      events: computed(() => AppState.events),
       myEvents: computed(() => AppState.myEvents),
-
       async cancelEvent(eventId) {
         try {
-          if (await Pop.confirm('Are you sure you want to CANCEL?')) {
-            await eventsService.cancelEvent(eventId)
+          if (await Pop.confirm("Are you sure you want to CANCEL?")) {
+            await eventsService.cancelEvent(eventId);
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error.message)
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
         }
       }
-    }
-  }
+    };
+  },
+  components: { EventCard }
 }
 </script>
 

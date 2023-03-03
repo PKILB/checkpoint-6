@@ -64,21 +64,22 @@
                                 <div class="text-end mb-2">
                                     Join The Conversation
                                 </div>
-                                <div>
+                                <div v-if="account.id">
                                     <Comment />
                                 </div>
                                 <div v-for="c in comments" class="col-2">
-                                    <img :src="c.picture" :alt="c.name + 'picture'" class="img-fluid profile-img">
-                                    <!-- {{ comments.creatorId.picture }} -->
-                                </div>
+                                    <img :src="c.creator.picture" :alt="c.name + 'picture'" class="img-fluid profile-img">
+                                    <!-- {{ c?.creator.picture }} -->
 
-                                <div v-if="!comments" class="col-10 comment-color">
-                                    <div class="row">
+                                    <!-- </div> -->
+
+                                    <!-- <div v-if="!comments" class="col-10 comment-color"> -->
+                                    <div class="row d-flex">
                                         <div class="col-12">
-                                            {{ comment.creatorId.name }}
+                                            {{ c?.creator.name }}
                                         </div>
                                         <div class="col-12">
-                                            {{ comment.body }}
+                                            {{ c?.body }}
                                         </div>
                                     </div>
                                 </div>
