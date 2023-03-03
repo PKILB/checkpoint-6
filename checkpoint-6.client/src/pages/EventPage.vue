@@ -67,8 +67,20 @@
                                 <div>
                                     <Comment />
                                 </div>
-                                <div>
-                                    {{ comments }}
+                                <div v-for="c in comments" class="col-2">
+                                    <img :src="c.picture" :alt="c.name + 'picture'" class="img-fluid profile-img">
+                                    <!-- {{ comments.creatorId.picture }} -->
+                                </div>
+
+                                <div v-if="!comments" class="col-10 comment-color">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {{ comment.creatorId.name }}
+                                        </div>
+                                        <div class="col-12">
+                                            {{ comment.body }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,6 +173,10 @@ export default {
 <style lang="scss" scoped>
 .bg-color {
     background-color: #434653;
+}
+
+.comment-color {
+    background-color: #b4bde7;
 }
 
 .profile-img {
