@@ -9,7 +9,7 @@ export class Event {
         this.coverImg = data.coverImg
         this.location = data.location
         this.capacity = data.capacity
-        this.startDate = new Date(data.startDate).toLocaleDateString()
+        this.startDate = new Date(data.startDate).toLocaleString()
         this.isCanceled = data.isCanceled
         this.type = data.type
         this.creator = new Profile(data.creator)
