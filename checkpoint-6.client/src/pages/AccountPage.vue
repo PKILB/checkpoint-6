@@ -18,13 +18,7 @@
     <div class="row mt-5 text-light">
       <div class="col-12">
         Upcoming Events
-        <!-- <li>
-            <button @click="cancelEvent(event.id)"
-              v-if="account.id && route.name == 'Event' && event?.creatorId == account.id" class="btn btn-danger"
-              :disabled="event.isCanceled">
-              {{ event.isCanceled ? 'isCanceled' : 'close event' }}
-            </button>
-          </li> -->
+
       </div>
       <div class="col-8">
 

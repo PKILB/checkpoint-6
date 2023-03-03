@@ -85,7 +85,7 @@
                                         </div>
                                         <div class="col-10">
                                             <div class="col-12 text-end">
-                                                <button v-if="c?.creatorId == account.id"
+                                                <button @click="deleteComment(c.id)" v-if="c?.creatorId == account.id"
                                                     class="btn btn-danger">Delete</button>
                                             </div>
                                             <div class="col-12">

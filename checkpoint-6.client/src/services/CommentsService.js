@@ -7,6 +7,14 @@ import { Comment } from "../models/Comment.js"
 
 class CommentsService {
 
+    async deleteComment(commentId) {
+        const res = await api.delete('api/comments/' + commentId)
+        logger.log('delete', res.data)
+        let i = AppState.comments.findIndex(c => c.id == commentId)
+        if (i != -1) {
+            AppState.comments.splice(i, 1)
+        }
+    }
     async getCommentsByEventId(eventId) {
         AppState.comments = []
         const res = await api.get('api/events/' + eventId + '/comments')
