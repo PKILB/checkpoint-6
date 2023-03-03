@@ -53,7 +53,7 @@
             </div>
             <div class="col-12 m-auto">
                 <div class="row bg-color">
-                    <div v-for="t in tickets" class="col-12">
+                    <div v-for="t in tickets" class="col-2 d-flex justify-content-center">
                         <img :src="t.picture" :title="t.name" alt="" class="img-fluid profile-img">
                     </div>
                 </div>
