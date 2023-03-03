@@ -3,6 +3,13 @@
         <div class="row my-3">
             <div class="col-12 m-auto bg-color">
                 <div class="row text-light">
+                    <div class="col-12 text-end mt-3">
+                        <button v-if="account.id == event?.creator.id" @click="cancelEvent(event.id)"
+                            class="btn btn-danger ms-4" :disabled="event.isCanceled">
+                            <i class="mdi mdi-close-circle text-dark"></i>
+                            {{ event.isCanceled ? 'Is Canceled' : 'cancel event' }}
+                        </button>
+                    </div>
                     <div class="col-4 my-4">
                         <img class="img-fluid" :src="event?.coverImg" alt="">
                     </div>
@@ -31,7 +38,8 @@
                             <h6>
                                 {{ event?.capacity }} Spots Left
                             </h6>
-                            <button v-if="!foundTicket" @click="createTicket()" class="btn btn-warning">Attend
+                            <button v-if="!foundTicket" @click="createTicket()" :hidden="event.isCanceled"
+                                class="btn btn-warning">Attend
                                 <i class="mdi mdi-account-check"></i></button>
                         </div>
                     </div>
@@ -67,19 +75,29 @@
                                 <div v-if="account.id">
                                     <Comment />
                                 </div>
-                                <div v-for="c in comments" class="col-2">
-                                    <img :src="c.creator.picture" :alt="c.name + 'picture'" class="img-fluid profile-img">
-                                    <!-- {{ c?.creator.picture }} -->
-
-                                    <!-- </div> -->
-
-                                    <!-- <div v-if="!comments" class="col-10 comment-color"> -->
-                                    <div class="row d-flex">
-                                        <div class="col-12">
-                                            {{ c?.creator.name }}
+                            </div>
+                            <div class="row">
+                                <div v-for="c in comments" class="col-12">
+                                    <div class="row d-flex align-items-center mb-2">
+                                        <div class="col-2">
+                                            <img :src="c.creator.picture" :alt="c.name + 'picture'"
+                                                class="img-fluid profile-img comment-img ">
                                         </div>
-                                        <div class="col-12">
-                                            {{ c?.body }}
+                                        <div class="col-10">
+                                            <div class="col-12 text-end">
+                                                <button v-if="c?.creatorId == account.id"
+                                                    class="btn btn-danger">Delete</button>
+                                            </div>
+                                            <div class="col-12">
+                                                <h5>
+                                                    <b>
+                                                        {{ c?.creator.name }}
+                                                    </b>
+                                                </h5>
+                                            </div>
+                                            <div class="col-12 text-start">
+                                                {{ c?.body }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -151,15 +169,40 @@ export default {
         })
 
         return {
+            route,
             event: computed(() => AppState.event),
             account: computed(() => AppState.account),
             tickets: computed(() => AppState.tickets),
             foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.account.id)),
             comments: computed(() => AppState.comments),
+            comment: computed(() => AppState.comment),
+
+            async deleteComment(commentId) {
+                try {
+                    if (await Pop.confirm('Are You Sure You Want To Delete This?')) {
+                        await commentsService.deleteComment(commentId)
+                    }
+                } catch (error) {
+                    logger.error(error)
+                    Pop.error(error.message)
+                }
+            },
+
+            async cancelEvent(eventId) {
+                try {
+                    if (await Pop.confirm('Are You Sure You Want To Cancel This?')) {
+                        await eventsService.cancelEvent(eventId)
+                    }
+                } catch (error) {
+                    logger.error(error)
+                    Pop.error(error.message)
+                }
+            },
 
             async createTicket() {
                 try {
                     await ticketsService.createTicket({ eventId: route.params.eventId })
+                    this.event.capacity--
                 } catch (error) {
                     logger.error(error)
                     Pop.error(error.message)
@@ -184,5 +227,11 @@ export default {
     // height: 50%;
     // width: 50%;
     border-radius: 50%;
+}
+
+.comment-img {
+    // border-radius: 50%;
+    height: 50%;
+    width: 50%;
 }
 </style>
