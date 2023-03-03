@@ -42,6 +42,10 @@ class TicketsService {
         // const event = await dbContext.Events.findById(ticketData.eventId)
         const event = await eventsService.getEventById(ticketData.eventId)
 
+        if (event.capacity = 0) {
+            throw new BadRequest('There Is No Room Left')
+        }
+
         if (event.isCanceled) {
             throw new Forbidden('Event is canceled')
         }

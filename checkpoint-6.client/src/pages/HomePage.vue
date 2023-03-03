@@ -20,10 +20,11 @@
     <div class="row mb-3">
       <div class="col-12 m-auto">
         <div class="types-color p-3 d-flex justify-content-around">
-          <button class="btn btn-outline-light">Concert</button>
-          <button class="btn btn-outline-light">Convention</button>
-          <button class="btn btn-outline-light">Digital</button>
-          <button class="btn btn-outline-light">Sport</button>
+          <button @click="changeFilterType('')" class="btn btn-outline-light">All</button>
+          <button @click="changeFilterType('concert')" class="btn btn-outline-light">Concert</button>
+          <button @click="changeFilterType('convention')" class="btn btn-outline-light">Convention</button>
+          <button @click="changeFilterType('digital')" class="btn btn-outline-light">Digital</button>
+          <button @click="changeFilterType('sport')" class="btn btn-outline-light">Sport</button>
         </div>
       </div>
     </div>
@@ -42,12 +43,14 @@
 <script>
 import Pop from '../utils/Pop.js';
 import { eventsService } from '../services/EventsService.js'
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import EventCard from '../components/EventCard.vue';
 import { AppState } from '../AppState.js';
 
 export default {
   setup() {
+    const filterType = ref('')
+
     async function getAllEvents() {
       try {
         await eventsService.getAllEvents();
@@ -61,7 +64,18 @@ export default {
     });
 
     return {
-      events: computed(() => AppState.events)
+      events: computed(() => {
+        if (!filterType.value) {
+          return AppState.events
+        }
+        else {
+          return AppState.events.filter(e => e.type == filterType.value)
+        }
+      }),
+
+      changeFilterType(type) {
+        filterType.value = type
+      }
     };
   },
   components: { EventCard }
