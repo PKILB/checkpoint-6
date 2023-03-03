@@ -13,6 +13,7 @@ export class Event {
         this.isCanceled = data.isCanceled
         this.type = data.type
         this.creator = new Profile(data.creator)
+        // this.creatorName = data.creator.name
     }
 }
 

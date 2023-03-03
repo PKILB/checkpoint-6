@@ -32,10 +32,7 @@ class TicketsService {
 
     async getMyTickets(accountId) {
         const tickets = await dbContext.Tickets.find({ accountId })
-        .populate({
-            path: 'event',
-            select: 'name picture'
-        })
+        .populate('event')
         return tickets
     }
     async createTicket(ticketData) {

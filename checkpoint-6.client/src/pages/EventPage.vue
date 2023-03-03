@@ -35,12 +35,23 @@
                             </p>
                         </div>
                         <div class="col-12 d-flex justify-content-between">
-                            <h6>
+                            <h6 v-if="!event.capacity == 0">
                                 {{ event?.capacity }} Spots Left
                             </h6>
-                            <button v-if="!foundTicket" @click="createTicket()" :hidden="event.isCanceled"
-                                class="btn btn-warning">Attend
-                                <i class="mdi mdi-account-check"></i></button>
+                            <h6 v-else class="fs-1 border-color">
+                                <b>
+                                    Event Is Sold Out
+                                </b>
+                            </h6>
+                            <button v-if="!foundTicket" @click="createTicket()"
+                                :hidden="event.isCanceled || event.capacity == 0" class="btn btn-warning">Attend
+                                <i class="mdi mdi-account-check"></i>
+                            </button>
+                            <button v-else @click="deleteTicket()" :hidden="event.isCanceled" class="btn btn-danger">Refund
+                                Ticket
+                                <i class="mdi mdi-account-minus"></i>
+                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -76,28 +87,28 @@
                                     <Comment />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div v-for="c in comments" class="col-12">
-                                    <div class="row d-flex align-items-center mb-2">
-                                        <div class="col-2">
-                                            <img :src="c.creator.picture" :alt="c.name + 'picture'"
-                                                class="img-fluid profile-img comment-img ">
+                        </div>
+                        <div class="row comment-color text-color mb-4">
+                            <div v-for="c in comments" class="col-12">
+                                <div class="row d-flex align-items-center mb-2">
+                                    <div class="col-2">
+                                        <img :src="c.creator.picture" :alt="c.name + 'picture'"
+                                            class="img-fluid profile-img comment-img ">
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="col-12 text-end mt-3">
+                                            <button @click="deleteComment(c.id)" v-if="c?.creatorId == account.id"
+                                                class="btn btn-danger">Delete</button>
                                         </div>
-                                        <div class="col-10">
-                                            <div class="col-12 text-end">
-                                                <button @click="deleteComment(c.id)" v-if="c?.creatorId == account.id"
-                                                    class="btn btn-danger">Delete</button>
-                                            </div>
-                                            <div class="col-12">
-                                                <h5>
-                                                    <b>
-                                                        {{ c?.creator.name }}
-                                                    </b>
-                                                </h5>
-                                            </div>
-                                            <div class="col-12 text-start">
-                                                {{ c?.body }}
-                                            </div>
+                                        <div class="col-12">
+                                            <h5>
+                                                <b>
+                                                    {{ c?.creator.name }}
+                                                </b>
+                                            </h5>
+                                        </div>
+                                        <div class="col-12 text-start">
+                                            {{ c?.body }}
                                         </div>
                                     </div>
                                 </div>
@@ -177,10 +188,11 @@ export default {
             comments: computed(() => AppState.comments),
             comment: computed(() => AppState.comment),
 
-            async deleteComment(commentId) {
+            async deleteComment() {
                 try {
                     if (await Pop.confirm('Are You Sure You Want To Delete This?')) {
-                        await commentsService.deleteComment(commentId)
+                        await commentsService.deleteComment({ eventId: route.params.eventId })
+                        this.event.capacity++
                     }
                 } catch (error) {
                     logger.error(error)
@@ -207,6 +219,17 @@ export default {
                     logger.error(error)
                     Pop.error(error.message)
                 }
+            },
+
+            async deleteTicket(ticketId) {
+                try {
+                    if (await Pop.confirm('Are You Sure You Want To Refund This Ticket?')) {
+                        await ticketsService.deleteTicket(ticketId)
+                    }
+                } catch (error) {
+                    logger.error(error)
+                    Pop.error(error.message)
+                }
             }
         }
     }
@@ -220,13 +243,21 @@ export default {
 }
 
 .comment-color {
-    background-color: #b4bde7;
+    background-color: #5b5c5f;
+}
+
+.text-color {
+    text-shadow: 0 0 4px black;
 }
 
 .profile-img {
     // height: 50%;
     // width: 50%;
     border-radius: 50%;
+}
+
+.border-color {
+    text-shadow: 0 0 4px rgb(253, 253, 93);
 }
 
 .comment-img {
