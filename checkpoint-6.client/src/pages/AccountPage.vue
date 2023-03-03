@@ -14,13 +14,13 @@
     </div>
   </div>
 
-  <div class="container">
+  <!-- <div class="container">
     <div class="row mt-5 text-light">
       <div class="col-12">
-        Upcoming Events
+        Upcoming Events -->
 
-      </div>
-      <!-- <div class="col-8">
+  <!-- </div> -->
+  <!-- <div class="col-8">
         <div class="row">
           <div class="col-12">
             <div class="row">
@@ -35,8 +35,8 @@
           </div>
         </div>
       </div> -->
-    </div>
-  </div>
+  <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script>
