@@ -4,10 +4,10 @@ import { Schema } from "mongoose";
 
 export const EventSchema = new Schema(
     {
-    name: { type: String, required: true, minLength: 2, maxLength: 20},
-    description: { type: String, required: true, minLength: 1, maxLength: 2000},
+    name: { type: String, required: true},
+    description: { type: String, required: true},
     coverImg: { type: String, required: true, maxLength: 5000},
-    location: { type: String, required: true, minLength: 10, maxLength: 150},
+    location: { type: String, required: true},
     capacity: { type: Number, min: 0, max: 10000},
     startDate: { type: Date, required: true},
     isCanceled: { type: Boolean, default: false, required: true},

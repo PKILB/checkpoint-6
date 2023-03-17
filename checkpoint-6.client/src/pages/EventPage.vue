@@ -4,11 +4,15 @@
             <div class="col-12 m-auto bg-color">
                 <div class="row text-light">
                     <div class="col-12 text-end mt-3">
-                        <button v-if="account.id == event?.creator.id" @click="cancelEvent(event.id)"
-                            class="btn btn-danger ms-4" :disabled="event.isCanceled">
-                            <i class="mdi mdi-close-circle text-dark"></i>
-                            {{ event.isCanceled ? 'Is Canceled' : 'cancel event' }}
-                        </button>
+                        <div v-if="account.id == event?.creator.id">
+                            <button @click="cancelEvent(event.id)" class="btn btn-danger ms-4" :disabled="event.isCanceled">
+                                <i class="mdi mdi-close-circle text-dark"></i>
+                                {{ event.isCanceled ? 'Is Canceled' : 'cancel event' }}
+                            </button>
+                        </div>
+                        <div v-if="event.isCanceled">
+                            <p>Is Canceled!!!</p>
+                        </div>
                     </div>
                     <div class="col-4 my-4">
                         <img class="img-fluid" :src="event?.coverImg" alt="">
@@ -191,7 +195,7 @@ export default {
             async deleteComment() {
                 try {
                     if (await Pop.confirm('Are You Sure You Want To Delete This?')) {
-                        await commentsService.deleteComment({ eventId: route.params.eventId })
+                        await commentsService.deleteComment(commentId)
                         this.event.capacity++
                     }
                 } catch (error) {
